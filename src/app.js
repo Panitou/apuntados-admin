@@ -6,7 +6,6 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 import taskRoutes from "./routes/tasks.routes.js";
 import userRoutes from "./routes/user.route.js";
-import listingRoutes from "./routes/listing.route.js";
 import dotenv from "dotenv";
 
 dotenv.config(); // Carga las variables de entorno desde el archivo .env
@@ -28,7 +27,6 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api", taskRoutes);
 app.use("/api", userRoutes);
-app.use("/api", listingRoutes); // Usar las rutas de los apuntes
 
 if (process.env.NODE_ENV === "production") {
   const path = await import("path");

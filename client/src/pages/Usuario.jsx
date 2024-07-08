@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  addUserRequest,
-  getUsersRequest,
-  deleteUserRequest,
-} from "../api/user.js";
+import { addUserRequest, getUsersRequest } from "../api/user.js";
 
 function Usuario() {
   const [users, setUsers] = useState([]);
@@ -40,18 +36,9 @@ function Usuario() {
     try {
       const response = await addUserRequest(newUser);
       setUsers([...users, response.data]);
-      setNewUser({ username: "", email: "", password: "" });
+      setNewUser({ username: "", email: "" });
     } catch (error) {
       setError("Error adding user");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteUserRequest(id);
-      setUsers(users.filter((user) => user._id !== id));
-    } catch (error) {
-      setError("Error deleting user");
     }
   };
 
@@ -86,6 +73,7 @@ function Usuario() {
         />
         <button type="submit">Add User</button>
       </form>
+
       {loading ? (
         <p>Loading...</p>
       ) : (
@@ -94,7 +82,6 @@ function Usuario() {
             <tr>
               <th>Username</th>
               <th>Email</th>
-              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -102,11 +89,6 @@ function Usuario() {
               <tr key={user._id}>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>
-                  <button onClick={() => handleDelete(user._id)}>
-                    Eliminar
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>
