@@ -124,38 +124,3 @@ export const getProfile = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-export const updateUser = async (req, res, next) => {
-  try {
-    const userId = req.user.id;
-
-    // Verificar si el ID del usuario en el token coincide con el ID del parámetro
-    if (userId !== req.params.id) {
-      return res
-        .status(401)
-        .json({ message: "You can only update your own account!" });
-    }
-
-    // Hash de la nueva contraseña si se proporciona
-    if (req.body.password) {
-      req.body.password = await bcrypt.hash(req.body.password, 10);
-    }
-
-    // Actualizar los datos del usuario
-    const updatedUser = await UserAdmin.findByIdAndUpdate(
-      userId,
-      { $set: req.body },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const { password, ...rest } = updatedUser._doc;
-
-    res.status(200).json(rest);
-  } catch (error) {
-    next(error);
-  }
-};
